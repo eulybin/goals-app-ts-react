@@ -8,8 +8,8 @@ export default function CourseGoal({ title, children }: CourseGoalProps) {
       <div>
         <h2>{title}</h2>
         {children}
-        <button>Delete</button>
       </div>
+      <button>Delete</button>
     </article>
   );
 }
