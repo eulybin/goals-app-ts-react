@@ -1,18 +1,15 @@
-type CourseGoalProps = {
-  title: string;
-  description: string;
-};
+import type { PropsWithChildren } from 'react';
 
-const CourseGoal = ({ title, description }: CourseGoalProps) => {
+type CourseGoalProps = PropsWithChildren<{ title: string }>;
+
+export default function CourseGoal({ title, children }: CourseGoalProps) {
   return (
     <article>
       <div>
         <h2>{title}</h2>
-        <p>{description}</p>
+        {children}
         <button>Delete</button>
       </div>
     </article>
   );
-};
-
-export default CourseGoal;
+}
