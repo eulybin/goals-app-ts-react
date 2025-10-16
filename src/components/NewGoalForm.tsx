@@ -1,39 +1,63 @@
-import type { FormEvent } from 'react';
+import { useState } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 import type { NewGoal } from '../types';
-import { useRef } from 'react';
 
 type NewGoalFormProps = {
     onSubmit: (newGoalObject: NewGoal) => void;
 };
 
 export default function NewGoalForm({ onSubmit }: NewGoalFormProps) {
-    const goalInputRef = useRef<HTMLInputElement>(null);
-    const summaryInputRef = useRef<HTMLInputElement>(null);
+    const [goalInput, setGoalInput] = useState('');
+    const [summaryInput, setSummaryInput] = useState('');
+
+    const handleGoalChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setGoalInput(e.target.value);
+    };
+
+    const handleSummaryChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setSummaryInput(e.target.value);
+    };
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const newGoalObject = {
-            goal: goalInputRef.current!.value,
-            summary: summaryInputRef.current!.value,
+        const newGoalObject: NewGoal = {
+            goal: goalInput.trim(),
+            summary: summaryInput.trim(),
         };
 
         onSubmit(newGoalObject);
-        e.currentTarget.reset();
+        setGoalInput('');
+        setSummaryInput('');
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <p>
                 <label htmlFor='goal'>Your goal:</label>
-                <input id='goal' type='text' ref={goalInputRef} required />
+                <input
+                    onChange={handleGoalChange}
+                    id='goal'
+                    type='text'
+                    value={goalInput}
+                    placeholder='e.g. Learn Typescript'
+                    required
+                    autoFocus
+                />
             </p>
             <p>
                 <label htmlFor='summary'>Short Summary:</label>
-                <input id='summary' type='text' ref={summaryInputRef} required />
+                <input
+                    onChange={handleSummaryChange}
+                    id='summary'
+                    type='text'
+                    value={summaryInput}
+                    placeholder='e.g. Learn to use typescript with React'
+                    required
+                />
             </p>
             <p>
-                <button>Add Goal</button>
+                <button type='submit'>Add Goal</button>
             </p>
         </form>
     );
